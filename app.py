@@ -13,10 +13,12 @@ from tensorflow import keras
 from tensorflow.keras.applications.imagenet_utils import preprocess_input, decode_predictions
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from IPython.display import IFrame
+import threading
 
 # Some utilites
 import numpy as np
-from util import base64_to_pil
+#from util import base64_to_pil
 
 
 # Declare a flask app
@@ -26,13 +28,13 @@ app = Flask(__name__)
 # You can use pretrained model from Keras
 # Check https://keras.io/applications/
 from keras.applications.mobilenet_v2 import MobileNetV2
-model = MobileNetV2(weights='imagenet')
+#model = MobileNetV2(weights='imagenet')
 
 print('Model loaded. Check http://127.0.0.1:5000/')
 
 
 # Model saved with Keras model.save()
-MODEL_PATH = 'models/your_model.h5'
+MODEL_PATH = 'model.h5'
 
 # Load your own trained model
 # model = load_model(MODEL_PATH)
@@ -91,5 +93,9 @@ if __name__ == '__main__':
     # app.run(port=5002, threaded=False)
 
     # Serve the app with gevent
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
-    http_server.serve_forever()
+    #http_server = WSGIServer(('0.0.0.0', 500), app)
+    #http_server.serve_forever()
+    threading.Thread(target=app.run, kwargs={'host':'0.0.0.0','port':500}).start() 
+    
+
+
